@@ -79,6 +79,10 @@ export default {
             {
               title: 'Роли',
               link: '/settings/roles'
+            },
+            {
+              title: 'Тэги',
+              link: '/settings/tags'
             }
           ]
         }
