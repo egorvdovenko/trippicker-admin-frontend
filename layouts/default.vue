@@ -77,12 +77,12 @@ export default {
           title: 'Настройки',
           children: [
             {
-              title: 'Роли',
-              link: '/settings/roles'
-            },
-            {
               title: 'Тэги',
               link: '/settings/tags'
+            },
+            {
+              title: 'Места',
+              link: '/settings/places'
             }
           ]
         }
