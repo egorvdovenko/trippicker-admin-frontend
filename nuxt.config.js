@@ -1,55 +1,105 @@
-export default {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+import tokenAuth from './token-auth.config'
 
-  // Global page headers: https://go.nuxtjs.dev/config-head
+export default {
+  /*
+  ** Nuxt rendering mode
+  ** See https://nuxtjs.org/api/configuration-mode
+  */
+  ssr: false,
+  /*
+  ** Nuxt target
+  ** See https://nuxtjs.org/api/configuration-target
+  */
+  target: 'server',
+  /*
+  ** Headers of the page
+  ** See https://nuxtjs.org/api/configuration-head
+  */
   head: {
-    title: 'admin-frontend',
-    htmlAttrs: {
-      lang: 'en'
-    },
+    titleTemplate: 'Административная панель - %s',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-
-  // Global CSS: https://go.nuxtjs.dev/config-css
+  /*
+  ** Global CSS
+  */
   css: [
-    'ant-design-vue/dist/antd.css'
+    'ant-design-vue/dist/antd.css',
+    '@/assets/less/ant-extensions/main.less'
   ],
-
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+  /*
+  ** Plugins to load before mounting the App
+  ** https://nuxtjs.org/guide/plugins
+  */
   plugins: [
-    '@/plugins/antd-ui'
+    '@/plugins/antd-ui',
+    '@/plugins/api',
+    '@/plugins/fragment'
   ],
-
-  // Auto import components: https://go.nuxtjs.dev/config-components
+  /*
+  ** Auto import components
+  ** See https://nuxtjs.org/api/configuration-components
+  */
   components: true,
-
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+  /*
+  ** Nuxt.js dev-modules
+  */
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
+    // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    // https://go.nuxtjs.dev/stylelint
-    '@nuxtjs/stylelint-module'
+    // Doc: https://github.com/nuxt-community/stylelint-module
+    '@nuxtjs/stylelint-module',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/router'
   ],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
+  /*
+  ** Nuxt.js modules
+  */
   modules: [
-    // https://go.nuxtjs.dev/axios
+    'nuxt-token-auth-module',
+    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  styleResources: {
+    less: [
+      '@/assets/less/main.less'
+    ]
+  },
+  /*
+  ** Axios module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  axios: {
+    baseUrl: process.env.API_URL
+  },
+  /*
+  ** Build configuration
+  ** See https://nuxtjs.org/api/configuration-build/
+  */
+  router: {
+    middleware: [
+      'tokenAuth'
+    ]
+  },
+  tokenAuth,
   build: {
+    loaders: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true
+        }
+      },
+      cssModules: {
+        modules: {
+          localIdentName: '[module]_[local]_[hash:base64:5]'
+        }
+      }
+    }
   }
 }

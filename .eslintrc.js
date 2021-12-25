@@ -5,8 +5,7 @@ module.exports = {
     node: true
   },
   parserOptions: {
-    parser: '@babel/eslint-parser',
-    requireConfigFile: false
+    parser: 'babel-eslint'
   },
   extends: [
     '@nuxtjs',
@@ -15,5 +14,7 @@ module.exports = {
   plugins: [
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    'vue/one-component-per-file': 'off'
+  }
 }
