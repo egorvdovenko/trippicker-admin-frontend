@@ -75,6 +75,9 @@ export default {
             .then(() => {
               this.$emit('success')
             })
+            .catch(() => {
+              this.$message.error('Неправильно указан логин или пароль')
+            })
             .finally(() => {
               this.isSubmitRequestPending = false
             })
