@@ -11,7 +11,15 @@ class TagsController extends BaseController {
     })
   }
 
-  getTagsList () {
+  getTagsList (payload) {
+    return this.axios({
+      method: 'get',
+      url: `${TagsController.prefix}/list`,
+      params: payload
+    })
+  }
+
+  getTagsListItems () {
     return this.axios({
       method: 'get',
       url: `${TagsController.prefix}/listItems`

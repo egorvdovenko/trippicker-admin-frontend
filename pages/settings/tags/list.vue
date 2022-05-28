@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     '$route.query' () {
-      this.getTags()
+      this.getTagsList()
     }
   },
   mounted () {
@@ -94,13 +94,13 @@ export default {
       { name: 'Тэги' }
     ])
 
-    this.getTags()
+    this.getTagsList()
   },
   methods: {
-    getTags (page = this.page) {
+    getTagsList (page = this.page) {
       this.isGetTagsRequestPending = true
       this.$api.tagsController
-        .getTags({
+        .getTagsList({
           page,
           pageSize: this.pagination.pageSize
         })
@@ -123,7 +123,7 @@ export default {
             .deleteTag(id)
             .then(() => {
               this.$message.success('Тэг успешно удалён')
-              this.getTags()
+              this.getTagsList()
             })
         }
       })

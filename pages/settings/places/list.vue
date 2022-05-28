@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     '$route.query' () {
-      this.getPlaces()
+      this.getPlacesList()
     }
   },
   mounted () {
@@ -94,13 +94,13 @@ export default {
       { name: 'Места' }
     ])
 
-    this.getPlaces()
+    this.getPlacesList()
   },
   methods: {
-    getPlaces (page = this.page) {
+    getPlacesList (page = this.page) {
       this.isGetPlacesRequestPending = true
       this.$api.placesController
-        .getPlaces({
+        .getPlacesList({
           page,
           pageSize: this.pagination.pageSize
         })
@@ -123,7 +123,7 @@ export default {
             .deletePlace(id)
             .then(() => {
               this.$message.success('Место успешно удалено')
-              this.getPlaces()
+              this.getPlacesList()
             })
         }
       })

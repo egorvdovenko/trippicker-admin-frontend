@@ -55,7 +55,7 @@ export default {
       this.getPlace()
     }
 
-    this.getTagsList()
+    this.getTagsListItems()
   },
   methods: {
     getPlace () {
@@ -69,9 +69,9 @@ export default {
           this.isGetPlaceRequestPending = false
         })
     },
-    getTagsList () {
+    getTagsListItems () {
       this.$api.tagsController
-        .getTagsList()
+        .getTagsListItems()
         .then(({ data: tagsList }) => {
           this.tagsList = tagsList
         })
