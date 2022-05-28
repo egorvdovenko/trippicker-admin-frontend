@@ -14,7 +14,7 @@ export default {
       type: Number,
       required: true,
       validator (value) {
-        return [1, 2, 3, 4].includes(value)
+        return [1, 2, 3, 4, 5].includes(value)
       }
     },
     noIndent: {
