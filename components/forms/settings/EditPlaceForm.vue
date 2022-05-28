@@ -28,6 +28,20 @@
     </a-form-model-item>
     <a-form-model-item
       has-feedback
+      label="Широта в десятичных градусах:"
+      prop="latitude"
+    >
+      <a-input-number v-model="fields.latitude" />
+    </a-form-model-item>
+    <a-form-model-item
+      has-feedback
+      label="Долгота в десятичных градусах:"
+      prop="longitude"
+    >
+      <a-input-number v-model="fields.longitude" />
+    </a-form-model-item>
+    <a-form-model-item
+      has-feedback
       label="Тэги:"
       prop="tags"
     >
@@ -81,6 +95,14 @@ export default {
       type: String,
       default: null
     },
+    latitude: {
+      type: Number,
+      default: null
+    },
+    longitude: {
+      type: Number,
+      default: null
+    },
     tagsIds: {
       type: Array,
       default: () => []
@@ -92,6 +114,8 @@ export default {
       fields: {
         name: null,
         description: null,
+        latitude: null,
+        longitude: null,
         tagsIds: []
       },
       rules: {
@@ -103,6 +127,20 @@ export default {
           }
         ],
         description: [
+          {
+            required: true,
+            message: 'Поле является обязательным для заполнения',
+            trigger: 'change'
+          }
+        ],
+        latitude: [
+          {
+            required: true,
+            message: 'Поле является обязательным для заполнения',
+            trigger: 'change'
+          }
+        ],
+        longitude: [
           {
             required: true,
             message: 'Поле является обязательным для заполнения',
