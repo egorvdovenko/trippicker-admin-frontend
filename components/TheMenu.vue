@@ -1,6 +1,7 @@
 <template>
   <a-menu
     v-model="menuModel"
+    :class="$style.root"
     mode="inline"
   >
     <template v-for="item in list">
@@ -146,3 +147,9 @@ export default {
   }
 }
 </script>
+
+<style lang="less" module>
+.root {
+  min-height: 100%;
+}
+</style>
