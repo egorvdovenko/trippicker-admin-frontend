@@ -42,6 +42,11 @@
           >
             Редактировать
           </nuxt-link>
+          <a-menu slot="overlay">
+            <a-menu-item @click="deletePlace(item)">
+              Удалить
+            </a-menu-item>
+          </a-menu>
         </a-dropdown-button>
       </a-list-item>
     </a-list>
@@ -106,6 +111,22 @@ export default {
         .finally(() => {
           this.isGetPlacesRequestPending = false
         })
+    },
+    deletePlace ({ id, name }) {
+      this.$confirm({
+        title: 'Удаление элемента',
+        content: `Вы собираетесь удалить место «${name}». Вы уверены, что хотите это сделать?`,
+        okText: 'Да',
+        cancelText: 'Нет',
+        onOk: () => {
+          this.$api.placesController
+            .deletePlace(id)
+            .then(() => {
+              this.$message.success('Место успешно удалено')
+              this.getPlaces()
+            })
+        }
+      })
     }
   }
 }

@@ -42,6 +42,11 @@
           >
             Редактировать
           </nuxt-link>
+          <a-menu slot="overlay">
+            <a-menu-item @click="deleteTag(item)">
+              Удалить
+            </a-menu-item>
+          </a-menu>
         </a-dropdown-button>
       </a-list-item>
     </a-list>
@@ -106,6 +111,22 @@ export default {
         .finally(() => {
           this.isGetTagsRequestPending = false
         })
+    },
+    deleteTag ({ id, name }) {
+      this.$confirm({
+        title: 'Удаление элемента',
+        content: `Вы собираетесь удалить тэг «${name}». Вы уверены, что хотите это сделать?`,
+        okText: 'Да',
+        cancelText: 'Нет',
+        onOk: () => {
+          this.$api.tagsController
+            .deleteTag(id)
+            .then(() => {
+              this.$message.success('Тэг успешно удалён')
+              this.getTags()
+            })
+        }
+      })
     }
   }
 }
