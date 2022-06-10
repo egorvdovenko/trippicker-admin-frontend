@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <slot
       name="upload"
       :beforeUpload="beforeUpload"
@@ -11,7 +11,7 @@
       @cancel="closeModal"
     >
       <div
-        :class="$style.cropperContainer"
+        class="cropperContainer"
         :style="{
           width: `${containerWidth}px`,
           height: `${containerHeight}px`
@@ -24,7 +24,7 @@
           v-on="$listeners"
         />
       </div>
-      <a-button-group :class="$style.cropperControls">
+      <a-button-group class="cropperControls">
         <a-button @click="$refs.cropper.rotateLeft()">
           <a-icon type="undo" />
         </a-button>
@@ -41,11 +41,11 @@
             closeModal()
           }"
         >
-          Сохранить
+          {{ modalControl }}
         </a-button>
       </template>
     </a-modal>
-  </fragment>
+  </div>
 </template>
 
 <script>
@@ -68,6 +68,10 @@ export default {
       type: String,
       default: 'Редактирование изображения'
     },
+    modalControl: {
+      type: String,
+      default: 'Save'
+    },
     modalWidth: {
       type: Number,
       default: 610
@@ -85,14 +89,11 @@ export default {
     return {
       modalVisible: false,
       imageUrl: null,
-      imageName: null,
       scale: null
     }
   },
   methods: {
     beforeUpload (image) {
-      this.imageName = image.name
-
       getBase64(image, (imageUrl) => {
         this.imageUrl = imageUrl
         this.modalVisible = true
@@ -101,8 +102,8 @@ export default {
       return false
     },
     cropImage () {
-      this.$refs.cropper.getCropBlob((blob) => {
-        this.$emit('crop', new File([blob], this.imageName))
+      this.$refs.cropper.getCropBlob((image) => {
+        this.$emit('crop', image)
       })
     },
     closeModal () {
