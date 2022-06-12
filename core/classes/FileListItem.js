@@ -1,4 +1,4 @@
-class FileListItem {
+export default class FileListItem {
   constructor (params = {}) {
     this.id = params.id
     this.uid = params.id
@@ -6,5 +6,3 @@ class FileListItem {
     this.name = params.name
   }
 }
-
-export default FileListItem

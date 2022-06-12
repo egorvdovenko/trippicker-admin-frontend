@@ -1,4 +1,5 @@
 import BaseController from '@/api/controllers/Base.controller.js'
+
 class FilesController extends BaseController {
   static prefix = '/api/Files';
 

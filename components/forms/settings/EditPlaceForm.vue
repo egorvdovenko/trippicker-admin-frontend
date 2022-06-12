@@ -66,6 +66,43 @@
         show-icon
       />
     </a-form-model-item>
+    <a-form-model-item
+      label="Галерея:"
+      prop="images"
+    >
+      <app-image-cropper
+        :auto-crop="true"
+        :fixed="true"
+        :fixed-number="[3, 2]"
+        :full="true"
+        :info-true="true"
+        output-type="png"
+        @crop="onImageCrop"
+      >
+        <template #upload="{ beforeUpload }">
+          <app-image-previewer>
+            <template #upload="{ handlePreview }">
+              <a-upload
+                list-type="picture-card"
+                accept="image/jpeg, image/png"
+                multiple
+                :before-upload="beforeUpload"
+                :file-list="fields.images"
+                @preview="handlePreview"
+                @change="onImageChange"
+              >
+                <a-icon :type="isUploadImageRequestPending ? 'loading' : 'plus'" />
+              </a-upload>
+            </template>
+          </app-image-previewer>
+        </template>
+      </app-image-cropper>
+      <a-alert
+        message="Загрузите изображение в формате jpeg или png."
+        type="info"
+        show-icon
+      />
+    </a-form-model-item>
     <a-button
       type="primary"
       html-type="submit"
@@ -77,7 +114,15 @@
 </template>
 
 <script>
+import AppImageCropper from '@/components/AppImageCropper.vue'
+import AppImagePreviewer from '@/components/AppImagePreviewer.vue'
+import FileListItem from '@/core/classes/FileListItem.js'
+
 export default {
+  components: {
+    AppImageCropper,
+    AppImagePreviewer
+  },
   props: {
     tagsList: {
       type: Array,
@@ -106,17 +151,23 @@ export default {
     tagsIds: {
       type: Array,
       default: () => []
+    },
+    images: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
     return {
       isSubmitRequestPending: false,
+      isUploadImageRequestPending: false,
       fields: {
         name: null,
         description: null,
         latitude: null,
         longitude: null,
-        tagsIds: []
+        tagsIds: [],
+        images: []
       },
       rules: {
         name: [
@@ -160,6 +211,12 @@ export default {
           this.fields[key] = this[key]
         }
       }
+
+      if (this.fields.images.length) {
+        this.fields.images = this.fields.images.map(
+          image => new FileListItem(image)
+        )
+      }
     },
     onSubmit () {
       this.$refs.form.validate((valid) => {
@@ -174,7 +231,9 @@ export default {
     createPlace () {
       this.isSubmitRequestPending = true
       this.$api.placesController
-        .createPlace(this.fields)
+        .createPlace({
+          ...this.fields
+        })
         .then(({ data: id }) => {
           this.$message.success('Место успешно создано')
           this.$emit('success', id)
@@ -197,6 +256,25 @@ export default {
         .finally(() => {
           this.isSubmitRequestPending = false
         })
+    },
+    onImageCrop (file) {
+      this.isUploadImageRequestPending = true
+      this.$api.filesController
+        .uploadFile(file)
+        .then(({ data: image }) => {
+          this.fields.images.push(new FileListItem(image))
+        })
+        .finally(() => {
+          this.isUploadImageRequestPending = false
+        })
+    },
+    onImageChange ({ file }) {
+      if (file.status === 'removed') {
+        this.fields.images.splice(
+          this.fields.images.findIndex(image => image.uid === file.uid),
+          1
+        )
+      }
     }
   }
 }
