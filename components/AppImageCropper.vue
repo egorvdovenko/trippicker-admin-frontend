@@ -11,7 +11,7 @@
       @cancel="closeModal"
     >
       <div
-        class="cropperContainer"
+        :class="$style.cropperContainer"
         :style="{
           width: `${containerWidth}px`,
           height: `${containerHeight}px`
@@ -24,7 +24,7 @@
           v-on="$listeners"
         />
       </div>
-      <a-button-group class="cropperControls">
+      <a-button-group :class="$style.cropperControls">
         <a-button @click="$refs.cropper.rotateLeft()">
           <a-icon type="undo" />
         </a-button>
